@@ -4,9 +4,13 @@ const port = 8080
 
 app.use(express.json())
 
-app.get('/', function (req, res) {
-  res.send('Dasa Educa - Artigos')
+app.get('/', function (request, response) {
+  console.log('EEE')
+  response.send('Dasa Educa - Artigos')
 })
+
+const router = require('./routes/artigos.routes')
+router(app)
 
 //app ouça a porta =]
 app.listen(port, function () {
