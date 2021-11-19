@@ -16,8 +16,10 @@ exports.create = (request, response) => {
 
   tabelaArtigos
     .create(artigo)
+    //.then(function()) .catch(function(error))
     .then(() => response.send('Artigo criado com sucesso'))
-    .catch(() =>
+    .catch(error => {
+      console.log(error)
       response.status(500).send('Ocorreu um erro ao salvar o artigo')
-    )
+    })
 }

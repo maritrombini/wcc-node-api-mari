@@ -23,5 +23,17 @@ module.exports = app => {
 
   router.post('/', artigosController.create)
 
+  /**
+   *
+   * app.post('/', function(req,res) {
+   * console.log(req)
+   * res.send("minha request")})
+   *
+   * implementação equivalente
+   * router.pos('/', function (request,response) {
+   * artigosController.create(request,response)}
+   *
+   * ) */
+
   app.use('/artigos', router)
 }
