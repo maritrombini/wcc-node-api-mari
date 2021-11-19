@@ -1,5 +1,7 @@
 //Regras do negócio
 
+const { response } = require('express')
+const res = require('express/lib/response')
 const database = require('../models')
 const tabelaArtigos = database.artigos
 
@@ -22,4 +24,13 @@ exports.create = (request, response) => {
       console.log(error)
       response.status(500).send('Ocorreu um erro ao salvar o artigo')
     })
+}
+
+exports.findAll = (request, response) => {
+  const artigos = tabelaArtigos
+    .findAll()
+    .then(data => response.send(data))
+    .catch(() =>
+      response.status(500).send('Ocorreu um erro ao listar os artigos')
+    )
 }
