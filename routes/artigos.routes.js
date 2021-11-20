@@ -21,20 +21,11 @@ module.exports = app => {
   const artigosController = require('../controllers/artigos.controller')
   let router = require('express').Router()
 
-  router.get('/findAll', artigosController.findAll)
-  router.post('/', artigosController.create)
+  router.get('/findById', artigosController.findById)
+  router.get('/findByTitulo', artigosController.findByTitulo)
 
-  /**
-   *
-   * app.post('/', function(req,res) {
-   * console.log(req)
-   * res.send("minha request")})
-   *
-   * implementação equivalente
-   * router.pos('/', function (request,response) {
-   * artigosController.create(request,response)}
-   *
-   * ) */
+  router.get('/', artigosController.findAll)
+  router.post('/', artigosController.create)
 
   app.use('/artigos', router)
 }
