@@ -103,3 +103,86 @@ exports.findByTitulo = (request, response) => {
         .send(`Ocorreu um erro ao buscar o artigo com o título ${titulo}`)
     )
 }
+
+//PUBLICADOS
+exports.findAllPublished = (request, response) => {
+  tabelaArtigos
+    .findAll({ where: { publicado: true } })
+    .then(function (data) {
+      response.send(data)
+    })
+    .catch(function (error) {
+      response
+        .status(500)
+        .send('Não foi possível buscar os artigos publicados.')
+    })
+}
+
+//UPDATE
+
+exports.update = (request, response) => {
+  const { body: updates } = request
+  const { id: idArtigo } = request.params
+  const query = { where: { id: idArtigo }, returning: true }
+
+  if (!idArtigo) {
+    return response
+      .status(400)
+      .send('Não foi possível atualizar pois o id não foi informado')
+  }
+
+  tabelaArtigos
+    .update(updates, query)
+    .then(function (data) {
+      const linhasAtualizadas = data[0]
+
+      if (linhasAtualizadas === 0) {
+        response
+          .status(404)
+          .send(
+            'Não foi encontrado nenhum registro para ser atualizado a partir do id: ' +
+              idArtigo
+          )
+      } else {
+        const artigosAtualizados = data[1]
+        response.send(artigosAtualizados)
+      }
+    })
+    .catch(function (error) {
+      console.log(error)
+      response.status(500).send('Ocorreu um erro ao atualizar')
+    })
+}
+
+//DELETE
+
+exports.delete = (request, response) => {
+  const { id: idArtigo } = request.params
+  tabelaArtigos
+    .destroy({ where: { id: idArtigo } })
+    .then(function (itemsDeletados) {
+      if (itemsDeletados === 0) {
+        response.send('O item com ID ' + idArtigo + 'não foi encontrado')
+      } else {
+        response.send('Artigo ' + idArtigo + ' deletado com sucesso')
+      }
+    })
+    .catch(function (error) {
+      response
+        .status(500)
+        .send('Ocorreu um erro ao tentar deletar o artigo ' + idArtigo)
+    })
+}
+
+//DELETE ALL
+
+exports.deleteAll = (req, res) => {
+  tabelaArtigos
+    .destroy({ where: {}, truncate: false })
+    .then(function (itensDeletados) {
+      response.send('Foram deletados ' + itensDeletados + ' artigos')
+    })
+    .catch(function (error) {
+      response.status(500).send('Ocorreu um erro ao deletar')
+    })
+}
