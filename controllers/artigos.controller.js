@@ -8,10 +8,22 @@ const tabelaArtigos = database.artigos
 
 // Cria um novo artigo
 exports.create = (request, response) => {
+  const { titulo } = request.body
   const artigo = {
-    titulo: request.body.titulo,
+    titulo,
+    // titulo: titulo,
     descricao: request.body.descricao,
     publicado: request.body.publicado
+  }
+
+  //object destructuring
+  //const titulo = request.body.titulo
+  //const {titulo} = request.body
+
+  if (!artigo.titulo) {
+    return response
+      .status(400)
+      .send('O artigo precisa conter o título definido')
   }
 
   // a promise pode ser resolvida .then()
@@ -40,6 +52,13 @@ exports.findAll = (request, response) => {
 
 exports.findById = (req, res) => {
   const { id } = req.query
+
+  if (!id) {
+    res
+      .status(400)
+      .send('Não foi possível buscar um artigo pois o Id não foi informado')
+  }
+
   tabelaArtigos
     .findByPk(id)
     .then(data => {
@@ -58,8 +77,14 @@ exports.findById = (req, res) => {
 
 exports.findByTitulo = (request, response) => {
   const { titulo } = request.query
-  tabelaArtigos
 
+  if (!titulo) {
+    response
+      .status(400)
+      .send('Não foi possível buscar um artigo pois o título não foi informado')
+  }
+
+  tabelaArtigos
     .findOne({ where: { titulo } })
     .then(data => {
       if (data) {

@@ -8,10 +8,14 @@ module.exports = (sequelizeDatabase, Sequelize) => {
       type: Sequelize.STRING
     },
     descricao: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: 'Construindo artigo'
     },
     publicado: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
     }
   })
 
